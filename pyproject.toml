@@ -1,0 +1,58 @@
+[project]
+name = "object-rel-nav"
+version = "0.1.0"
+description = "Object-Relative Navigation: ObjectReact [CoRL'25] | TANGO [ICRA'25] | RoboHop [ICRA'24]"
+readme = "Readme.md"
+requires-python = ">=3.10,<3.11"
+
+dependencies = [
+    # Core & scientific
+    "numpy",
+    "matplotlib",
+    "scikit-learn",
+    "scikit-image",
+    "seaborn",
+    "numba>=0.57",
+
+    # PyTorch & ML models (CUDA 12.6)
+    "torch",
+    "torchvision",
+    "open-clip-torch",
+    "transformers",
+    "einops",
+    "kornia",
+    "ultralytics",
+
+    # Data, graph & utilities
+    "networkx",
+    "h5py",
+    "natsort",
+    "pgmpy",
+    "python-igraph",
+    "pyvis",
+    "faiss-gpu",
+
+    # Robotics & spatial
+    "spatialmath-python",
+    "utm",
+
+    # Config & logging
+    "pyyaml",
+    "yacs",
+    "tyro",
+    "wandb",
+    "kaggle",
+    "gdown",
+
+    # Notebook
+    "ipykernel",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true

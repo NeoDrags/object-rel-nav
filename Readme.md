@@ -5,33 +5,18 @@ Official code release to test different controllers / trajectory planners.
 ### Environment
 
 <details>
-  <summary> Setup conda environment (with habitat & ultralytics)
+  <summary> Setup with uv and conda
 
   (see [this](https://github.com/oravus/object-react?tab=readme-ov-file#environment) to setup without habitat)
 </summary>
 
 ```
-conda create -n nav
-conda activate nav
+# setup conda and install
+source ./conda.sh
 
-conda install python=3.9 mamba -c conda-forge
-mamba install pip numpy matplotlib pytorch torchvision pytorch-cuda=11.8 opencv=4.6 cmake=3.14.0 habitat-sim withbullet numba=0.57 pyyaml ipykernel networkx h5py natsort open-clip-torch transformers einops scikit-learn kornia pgmpy python-igraph pyvis -c pytorch -c nvidia -c aihabitat -c conda-forge
+uv python pin 3.10
+uv sync
 
-mamba install -c conda-forge ultralytics
-
-mamba install -c conda-forge tyro faiss-gpu scikit-image ipykernel spatialmath-python gdown utm seaborn wandb kaggle yacs
-
-# setup git submodule (for objectreact controller)
-git clone https://github.com/oravus/object-rel-nav.git
-cd object-rel-nav/
-git submodule update --init --recursive
-
-# install habitat-lab
-cd libs/
-git clone https://github.com/facebookresearch/habitat-lab.git
-cd habitat-lab/
-git checkout v0.2.4
-pip install -e habitat-lab
 ```
 </details>
 
