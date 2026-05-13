@@ -3,56 +3,89 @@ name = "object-rel-nav"
 version = "0.1.0"
 description = "Object-Relative Navigation: ObjectReact [CoRL'25] | TANGO [ICRA'25] | RoboHop [ICRA'24]"
 readme = "Readme.md"
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.9,<3.10"
 
 dependencies = [
-    # Core & scientific
+    # Core scientific stack
     "numpy",
+    "scipy",
+    "pandas",
     "matplotlib",
+    "seaborn",
     "scikit-learn",
     "scikit-image",
-    "seaborn",
-    "numba>=0.57",
+    "numba",
+    "sympy",
 
-    # PyTorch & ML models (CUDA 12.6)
+    # PyTorch ecosystem
     "torch",
     "torchvision",
-    "open-clip-torch",
     "transformers",
+    "open-clip-torch",
     "einops",
+    "timm",
     "kornia",
     "ultralytics",
+    "efficientnet-pytorch",
+    "faiss-gpu",
+    "vit-pytorch",
+    "diffusers",
 
-    # Data, graph & utilities
+    # Vision & image processing
+    "opencv-python",
+    "imageio",
+    "imageio-ffmpeg",
+    "pillow",
+
+    # Robotics / navigation / geometry
+    "habitat-lab",
     "networkx",
-    "h5py",
-    "natsort",
-    "pgmpy",
     "python-igraph",
     "pyvis",
-    "faiss-gpu",
-
-    # Robotics & spatial
+    "pgmpy",
     "spatialmath-python",
     "utm",
+    "numpy-quaternion",
 
-    # Config & logging
+    # Config & experiment management
+    "hydra-core",
+    "omegaconf",
     "pyyaml",
     "yacs",
     "tyro",
     "wandb",
-    "kaggle",
-    "gdown",
 
-    # Notebook
+    # Data & storage
+    "h5py",
+    "natsort",
+    "polars",
+    "lmdb",
+
+    # Utilities
+    "tqdm",
+    "requests",
+    "gdown",
+    "kaggle",
+    "ftfy",
+    "prettytable",
+
+    # Notebook / development
     "ipykernel",
+    "ipython",
+    "jupyter-client",
+
+    # RL environment
+    "gym==0.23.0",
+
+    # Warmup scheduler
+    "warmup-scheduler @ git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git",
 ]
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu126" }
-torchvision = { index = "pytorch-cu126" }
+torch = { index = "pytorch-cu118" }
+torchvision = { index = "pytorch-cu118" }
 
 [[tool.uv.index]]
-name = "pytorch-cu126"
-url = "https://download.pytorch.org/whl/cu126"
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
 explicit = true

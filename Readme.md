@@ -14,7 +14,7 @@ Official code release to test different controllers / trajectory planners.
 # setup conda and install
 source ./conda.sh
 
-uv python pin 3.10
+uv python pin 3.9
 uv sync
 
 ```
