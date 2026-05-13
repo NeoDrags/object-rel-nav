@@ -13,7 +13,7 @@ Official code release to test different controllers / trajectory planners.
 ```
 # setup conda and install
 source ./conda.sh
-
+uv venv --python $(which python) --system-site-packages
 uv python pin 3.9
 uv sync
 
@@ -33,7 +33,7 @@ In `./data/`, sym link the following downloads as subdirs: `hm3d v0.2`, `instanc
   - **hm3d-val-semantic-annots-v0.2.tar** (2.0G) - [Download](https://api.matterport.com/resources/habitat/hm3d-val-semantic-annots-v0.2.tar)
   - **hm3d-val-semantic-configs-v0.2.tar** (40K) - [Download](https://api.matterport.com/resources/habitat/hm3d-val-semantic-configs-v0.2.tar)
 
-  These downloaded `hm3d-val*` can be extracted to `./data/hm3d_v0.2/val/`
+These downloaded `hm3d-val*` can be extracted to `./data/hm3d_v0.2/val/`. All the data from these should be extracted such that the content within them is in `hm3d_v0.2/val/` not in `hm3d_v0.2/val/*/`
 
 
 - Download official `InstanceImageNav` challenge dataset from [here](https://dl.fbaipublicfiles.com/habitat/data/datasets/imagenav/hm3d/v3/instance_imagenav_hm3d_v3.zip) (Direct Link | ~512 mb)

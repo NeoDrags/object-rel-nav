@@ -90,8 +90,8 @@ def run(args):
     ):
         results_summary["total_episodes"] += 1
         episode_name = path_episode.parts[-1].split("_")[0]
-        path_scene_hm3d = sorted(path_scenes_root_hm3d.glob(f"*{episode_name}"))[0]
-        scene_name_hm3d = str(sorted(path_scene_hm3d.glob("*basis.glb"))[0])
+        path_scene_hm3d = sorted(path_scenes_root_hm3d.rglob(f"*{episode_name}"))[0]
+        scene_name_hm3d = str(sorted(path_scene_hm3d.rglob("*basis.glb"))[0])
 
         episode_runner = None
         success_status = None
