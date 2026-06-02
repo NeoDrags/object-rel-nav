@@ -18,7 +18,6 @@ from libs.common.utils import (
     sample_goal_instances_across_regions,
 )
 
-
 def get_goal_mask(sim, agent, depth, semantic, final_goal_position):
     H, W = depth.shape
     area_threshold = int(np.ceil(0.001 * H * W))

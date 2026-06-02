@@ -10,7 +10,6 @@ from libs.common import utils
 from libs.logger.level import LOG_LEVEL
 logger.setLevel(LOG_LEVEL)
 
-
 class TrackTopological:
     def __init__(self, W, H, max_pl, cfg):
         self.max_history = 8
