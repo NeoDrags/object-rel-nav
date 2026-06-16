@@ -101,7 +101,6 @@ def get_incremental_shortest_path(sim, points, init_idx=0, floor_height_desired=
 
 
 def get_tsp_path(sim, points, init_idx=0, floor_height_desired=None):
-
     G = nx.Graph()
     paths = {}
     for i in range(len(points)):
