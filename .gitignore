@@ -23,6 +23,7 @@ hub/*
 temp.ipynb
 *.mp4
 *.npz
+.pixi
 #*.png
 
 results/

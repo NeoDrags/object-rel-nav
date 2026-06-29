@@ -5,15 +5,15 @@ path_results: './out/results/'
 
 # episode/task settings
 start_idx: 0
-step_idx: 3
-end_idx: 108
+step_idx: 1
+end_idx: 1
 
 reverse: False
 task_type: "original" # from ["original", "alt_goal", "via_alt_goal"]
 use_gt_localization: True
 env: "sim" # from ["sim", "real"]
 
-split: "val" # from ["train", "val"]
+split: "train" # from ["train", "val"]
 threshold_goal_distance: 1.0
 max_start_distance: "hard" # from ["easy", "hard", "full"]
 max_steps: 300
@@ -94,4 +94,4 @@ controller:
   w_min: -0.3
   w_max: 0.3
 
-out_dir: "20260516-10-23-24_learnt_gt_topometric"
+out_dir: "20260617-00-47-36_learnt_gt_topometric"

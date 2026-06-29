@@ -27,7 +27,6 @@ from argparse import ArgumentParser
 import logging
 import yaml
 import traceback
-
 from libs.logger import default_logger
 
 if "LOG_LEVEL" not in os.environ:
@@ -36,7 +35,6 @@ default_logger.setup_logging(level=os.environ["LOG_LEVEL"])
 
 from libs.common import utils
 from libs.experiments import task_setup
-
 
 def run(args):
     # set up all the paths

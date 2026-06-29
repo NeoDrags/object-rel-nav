@@ -1,0 +1,208 @@
+[workspace]
+channels = ["conda-forge"]
+name = "object-rel-nav"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+# ─────────────────────────────────────────────
+# Tasks
+# ─────────────────────────────────────────────
+[tasks]
+
+# Clone habitat-sim and habitat-lab
+clone-habitat = """
+(git clone https://github.com/facebookresearch/habitat-sim.git libs/habitat-sim && cd libs/habitat-sim && git checkout v0.3.1) || echo 'habitat-sim already cloned' && \
+(git clone https://github.com/facebookresearch/habitat-lab.git libs/habitat-lab && cd libs/habitat-lab && git checkout v0.3.1) || echo 'habitat-lab already cloned'
+"""
+
+# Install both habitat-sim and habitat-lab (with --no-build-isolation)
+install-habitat = { cmd = """
+cd libs/habitat-sim && rm -rf build/ && pip install . -v --no-build-isolation && \
+cd ../habitat-lab && pip install -e habitat-lab
+""", env = { WITH_BULLET = "1", HEADLESS = "1", CMAKE_POLICY_VERSION_MINIMUM = "3.5" } }
+
+# Combined task for convenience
+setup-habitat = { depends-on = ["clone-habitat", "install-habitat"] }
+
+# Clean up habitat to start fresh
+clean-habitat = """
+rm -rf libs/habitat-sim libs/habitat-lab && \
+pip uninstall habitat-sim habitat-lab habitat -y || true && \
+pip cache purge || true && \
+rm -rf /tmp/pip-* || true && \
+echo 'Cleaned up habitat-sim and habitat-lab'
+"""
+
+# Full reinstall from scratch
+reinstall-habitat = { depends-on = ["clean-habitat", "setup-habitat"] }
+
+# Install PyG extensions using pre-built wheels (run AFTER pixi install)
+install-pyg = "pip install torch-cluster torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-2.5.1+cu118.html"
+
+# Install ROS packages (separate index)
+install-ros = "pip install rosbag roslz4 --extra-index-url https://rospypi.github.io/simple/"
+
+# Install warmup scheduler from git
+install-warmup-scheduler = "pip install git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git"
+
+# Verify the environment is healthy
+verify = """
+python -c "
+import numpy as np
+print(f'NumPy: {np.__version__}')
+
+import habitat_sim
+print(f'habitat_sim: {habitat_sim.__version__}')
+print(f'Bullet physics: {habitat_sim.built_with_bullet}')
+
+import torch
+print(f'PyTorch: {torch.__version__}')
+print(f'CUDA available: {torch.cuda.is_available()}')
+
+import cv2
+print(f'OpenCV: {cv2.__version__}')
+
+print('\n✅ All checks passed!')
+"
+"""
+
+# ─────────────────────────────────────────────
+# FULL INIT - Run this after fresh 'pixi install'
+# ─────────────────────────────────────────────
+# Order: habitat (sim+lab) -> pyg -> ros -> warmup -> verify
+init = { depends-on = ["setup-habitat"], cmd = """
+echo '=== Step 2/5: Installing PyG extensions ===' && \
+pixi run install-pyg && \
+echo '=== Step 3/5: Installing ROS packages ===' && \
+pixi run install-ros && \
+echo '=== Step 4/5: Installing warmup scheduler ===' && \
+pixi run install-warmup-scheduler && \
+echo '=== Step 5/5: Verifying installation ===' && \
+pixi run verify && \
+echo '' && \
+echo '============================================' && \
+echo '✅ INIT COMPLETE! Environment is ready.' && \
+echo '============================================'
+""" }
+
+# ─────────────────────────────────────────────
+# CLEAN ALL - Nuclear option to start fresh
+# ─────────────────────────────────────────────
+clean-all = """
+echo 'Cleaning habitat...' && \
+rm -rf libs/habitat-sim libs/habitat-lab && \
+pip uninstall habitat-sim habitat-lab habitat magnum -y || true && \
+echo 'Cleaning pip cache...' && \
+pip cache purge || true && \
+rm -rf /tmp/pip-* || true && \
+echo 'Done! Now run: rm -rf .pixi/ pixi.lock && pixi install && pixi run init'
+"""
+
+# ─────────────────────────────────────────────
+# Conda dependencies
+# ─────────────────────────────────────────────
+[dependencies]
+python = "3.9.*"
+cmake = ">=3.14"
+ninja = "*"
+git = "*"
+pip = "*"
+
+# C++ stdlib — keep consistent across packages
+libstdcxx-ng = ">=12"
+
+# Build dependencies that habitat-sim needs
+eigen = "*"
+bullet = "*"
+libgl = "*"
+libglu = "*"
+
+# Scientific stack — prefer conda builds for native libs
+numpy = ">=1.24,<2"
+scipy = "*"
+pandas = "*"
+matplotlib = "*"
+scikit-learn = "*"
+scikit-image = "*"
+numba = "*"
+networkx = ">=3.0"
+natsort = "*"
+tqdm = "*"
+
+# Vision — use conda's opencv so it links against the conda GL stack
+opencv = ">=4.8"
+
+# Config / experiment management
+hydra-core = ">=1.3,<2"
+omegaconf = "*"
+pyyaml = "*"
+
+# Data & storage
+h5py = "*"
+
+# ─────────────────────────────────────────────
+# PyPI index config (for PyTorch CUDA wheels)
+# ─────────────────────────────────────────────
+[pypi-options]
+extra-index-urls = ["https://download.pytorch.org/whl/cu118"]
+index-strategy = "unsafe-best-match"
+
+# ─────────────────────────────────────────────
+# PyPI dependencies  (mirrors pyproject.toml)
+# ─────────────────────────────────────────────
+[pypi-dependencies]
+# PyTorch ecosystem
+torch = "==2.5.1+cu118"
+torchvision = "==0.20.1+cu118"
+sympy = "==1.13.1"
+transformers = "*"
+open-clip-torch = "*"
+einops = "*"
+timm = "*"
+kornia = "*"
+ultralytics = "*"
+efficientnet-pytorch = "*"
+faiss-gpu = "*"
+vit-pytorch = "*"
+diffusers = "*"
+
+# Vision & image processing
+imageio = "*"
+imageio-ffmpeg = "*"
+pillow = "*"
+
+# Robotics / navigation / geometry
+magnum = "*"
+python-igraph = "*"
+pyvis = "*"
+pgmpy = "*"
+spatialmath-python = "*"
+utm = "*"
+numpy-quaternion = "*"
+
+# Config & experiment management
+yacs = "*"
+tyro = "*"
+wandb = "*"
+
+# Data & storage
+seaborn = "*"
+polars = "*"
+lmdb = "*"
+
+# Utilities
+requests = "*"
+gdown = "*"
+kaggle = "*"
+ftfy = "*"
+prettytable = "*"
+
+# Notebook / development
+ipykernel = "*"
+ipython = "*"
+jupyter-client = "*"
+
+# RL environment
+gym = "==0.23.0"
+
+# warmup-scheduler installed via task (git source, not on PyPI)

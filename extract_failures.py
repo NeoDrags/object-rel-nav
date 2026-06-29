@@ -65,6 +65,8 @@ def find_failures(current_dir):
         try:
             failure_list.append(failed_case_extractor(root))
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(f"[WARN] Skipping {root}: {e}")
 
     if not failure_list:
