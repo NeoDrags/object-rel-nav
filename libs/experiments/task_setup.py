@@ -864,6 +864,7 @@ class Episode:
             "discrete_action",
             "agent_states",
             "controller_logs",
+            "latent",
         ]
         self.results_dict = {k: [] for k in results_dict_keys}
 
@@ -885,6 +886,10 @@ class Episode:
                 else:
                     self.update_vis()
 
+            latent_emb = None
+            if hasattr(self.goal_controller, "model") and hasattr(self.goal_controller.model, "latent"):
+                latent_emb = self.goal_controller.model.latent[0].cpu().numpy()
+
             results_dict_curr = {
                 "step": step,
                 "distance_to_goal": self.distance_to_goal,
@@ -894,6 +899,7 @@ class Episode:
                 "discrete_action": self.discrete_action,
                 "agent_states": self.agent.get_state() if self.agent is not None else None,
                 "controller_logs": self.controller_logs[-1] if self.controller_logs is not None and len(self.controller_logs) > 0 else None,
+                "latent": latent_emb,
             }
 
             self.update_results_dict(results_dict_curr)

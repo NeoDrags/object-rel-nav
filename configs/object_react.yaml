@@ -6,7 +6,7 @@ path_results: './out/results/'
 # episode/task settings
 start_idx: 0
 step_idx: 1
-end_idx: 1
+end_idx: 36
 
 reverse: False
 task_type: "original" # from ["original", "alt_goal", "via_alt_goal"]
@@ -40,7 +40,7 @@ except_exit: False # set True to disable try/except, print traceback, & exit
 
 # tango's visualization panel
 plot: False
-save_vis: False
+save_vis: True
 # dump_episode_images: 0
 
 cull_qry_instances: False
@@ -94,4 +94,4 @@ controller:
   w_min: -0.3
   w_max: 0.3
 
-out_dir: "20260617-00-47-36_learnt_gt_topometric"
+out_dir: "20260703-16-25-40_learnt_gt_topometric"

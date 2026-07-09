@@ -95,8 +95,13 @@ def visualize_flow(
     else:
         # return the figure as image (same size as img imshow-ed above)
         fig.canvas.draw()
-        vis = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-        vis = vis.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+        if hasattr(fig.canvas, 'tostring_rgb'):
+            vis = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+            vis = vis.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+        else:
+            vis = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
+            vis = vis.reshape(fig.canvas.get_width_height()[::-1] + (4,))
+            vis = vis[:, :, :3]
         vis = cv2.resize(vis, (img.shape[1], img.shape[0]))
         plt.close(fig)
         return vis

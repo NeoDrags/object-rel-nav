@@ -375,8 +375,13 @@ def visualize_prediction(
                 image = np.array(Image.open(buffer))
         elif to_img_method == "canvas":
             fig.canvas.draw()  # Render the figure
-            image_array = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-            image = image_array.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+            if hasattr(fig.canvas, 'tostring_rgb'):
+                image_array = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+                image = image_array.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+            else:
+                image_array = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
+                image = image_array.reshape(fig.canvas.get_width_height()[::-1] + (4,))
+                image = image[:, :, :3]
         else:
             pass
 
